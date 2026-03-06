@@ -61,9 +61,29 @@ cd Autonomous_Agentic_payment_system
 
 ### 2. Environment Variables
 Copy the `.env.example` file to `.env` in the appropriate directories and fill in your keys:
+### 3. Run the Services
+
+#### A. The Payventory Engine (Python ML)
 ```bash
-cp .env.example src/backend/.env
-# Also copy to src/ml/ if needed
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Run the API
+python -m uvicorn src.ml.api:app --reload --port 8000
+```
+
+#### B. The Backend (Node.js)
+```bash
+cd src/backend
+npm install
+node server.js
+```
+
+#### C. The Frontend (React)
+```bash
+cd src/frontend/Autonomous_Agentic_payment_system
+npm install
+npm run dev
 ```
 
 ---

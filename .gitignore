@@ -1,53 +1,80 @@
-# OS Files
+# --- OS Files ---
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 
-
-# Environment Variables
+# --- Environment ---
 .env
 .env.local
-.env.development
-.env.production
+.env.development.local
+.env.test.local
+.env.production.local
+*.env.example
+# ^ Note: Keep the real .env.example in the repo, but ignore any local clones like .env.local.example
 
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-*.log
-*.sqlite3
-*.db
-
-# Python virtual environments
-venv/
-env/
-.venv/
-
-# Node / Frontend
-node_modules/
-dist/
-build/
-coverage/
-
-# npm logs
+# --- Node / Frontend ---
+**/node_modules/
+**/dist/
+**/build/
+**/coverage/
+.eslintcache
+.stylelintcache
+.vite
+.next
+.cache/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.tox/
+.nox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*.stackdump
+.mypy_cache/
+.pyre_cache/
 
-# Vite
-.vite
-dist/
+# --- Databases ---
+*.sqlite
+*.sqlite3
+*.db
+dump.rdb
 
-
-
-# IDE files
+# --- IDEs / Editors ---
 .vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 .idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+.classpath
 
-
-*.tsbuildinfo
-
-
+# --- Miscellaneous ---
 logs/
 *.log
+tmp/
+temp/
