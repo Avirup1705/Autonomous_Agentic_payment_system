@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LayoutDashboard, TrendingUp, Shield, HeadphonesIcon, BarChart3, Users, Zap, Check, Menu, X } from "lucide-react";
 import Squares from "../components/Squares";
 import Shuffle from "../components/Shuffle";
@@ -12,6 +12,8 @@ function Landing() {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  const navigate = useNavigate();
 
   return (
     <div className={`landing-page ${isMenuOpen ? 'menu-open' : ''}`} style={{ scrollBehavior: 'smooth' }}>
@@ -89,7 +91,7 @@ function Landing() {
           <div className="hero-buttons">
             <Link to="/control-panel" className="btn-primary">
               <Zap size={18} />
-              Start trial now
+              Start now
             </Link>
           </div>
         </div>

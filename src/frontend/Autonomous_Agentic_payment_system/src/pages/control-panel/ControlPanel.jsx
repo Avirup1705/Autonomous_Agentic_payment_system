@@ -26,7 +26,11 @@ import {
     PanelLeftClose,
     PanelLeft,
     Menu,
-    X
+    X,
+    UploadCloud,
+    Database,
+    Link as LinkIcon,
+    Loader2
 } from "lucide-react";
 import "./controlPanel.css";
 
@@ -82,6 +86,10 @@ function ControlPanel() {
     const [config, setConfig] = useState(defaultConfig);
     const [editingSupplier, setEditingSupplier] = useState(null);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
+    const [isSyncing, setIsSyncing] = useState(false);
+    const [isFetchingUrl, setIsFetchingUrl] = useState(false);
+    const [webUrl, setWebUrl] = useState("");
 
     useEffect(() => {
         async function loadConfig() {
@@ -191,6 +199,70 @@ function ControlPanel() {
         } catch (err) {
             console.error("Connection Error:", err);
             alert("❌ Cannot reach Payventory Engine! Please ensure 'python -m uvicorn src.ml.api:app --reload --port 8000' is running in your terminal.");
+        }
+    };
+
+    const handleFileUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        setIsUploading(true);
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/data/upload-csv`, {
+                method: "POST",
+                body: formData,
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.detail || "Upload failed");
+            alert("✅ CSV File uploaded successfully! AI Engine is using the new data.");
+        } catch (err) {
+            console.error("Upload Error:", err);
+            alert(`❌ Error uploading file: ${err.message}`);
+        } finally {
+            setIsUploading(false);
+            e.target.value = null; // reset input
+        }
+    };
+
+    const handleMongoSync = async () => {
+        setIsSyncing(true);
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/data/sync-mongo`, { method: "POST" });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.detail || "Sync failed");
+            alert(`✅ Synchronized ${data.records} records from MongoDB!`);
+        } catch (err) {
+            console.error("Sync Error:", err);
+            alert(`❌ Error syncing with database: ${err.message}`);
+        } finally {
+            setIsSyncing(false);
+        }
+    };
+
+    const handleWebFetch = async () => {
+        if (!webUrl) {
+            alert("Please enter a URL first.");
+            return;
+        }
+        setIsFetchingUrl(true);
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/data/fetch-web`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ url: webUrl }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.detail || "Fetch failed");
+            alert("✅ Data fetched successfully from the URL!");
+            setWebUrl("");
+        } catch (err) {
+            console.error("Fetch Error:", err);
+            alert(`❌ Error fetching data: ${err.message}`);
+        } finally {
+            setIsFetchingUrl(false);
         }
     };
 
@@ -651,6 +723,80 @@ function ControlPanel() {
                                             <span className="name">Low Priority</span>
                                             <span className="amount">{config.prioritySplit.low}%</span>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Data Source Integration Section */}
+                    <div className="data-source-section" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
+                        <div className="config-card">
+                            <div className="config-card-header">
+                                <Database size={20} className="config-icon blue" />
+                                <h3>Data Source Integration</h3>
+                            </div>
+                            <p className="config-desc">Manage how the AI Engine accesses your actual inventory data.</p>
+                            
+                            <div className="data-sources-grid" style={{
+                                display: 'grid',
+                                gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                                gap: '1rem',
+                                marginTop: '1.5rem'
+                            }}>
+                                {/* Upload Local CSV */}
+                                <div className="data-source-box" style={{ background: 'rgba(30, 40, 32, 0.4)', padding: '1.25rem', borderRadius: '12px', border: '1px solid rgba(74, 222, 128, 0.1)' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+                                        <div className="mini-icon green" style={{ width: '36px', height: '36px' }}><UploadCloud size={18} /></div>
+                                        <h4 style={{ margin: 0, fontSize: '0.95rem' }}>Upload Local CSV</h4>
+                                    </div>
+                                    <p style={{ fontSize: '0.8rem', color: '#9ca3af', marginBottom: '1rem' }}>Overwrite current engine data with an inventory CSV file.</p>
+                                    <label className="save-btn" style={{ justifyContent: 'center', cursor: 'pointer', textAlign: 'center', opacity: isUploading ? 0.7 : 1 }}>
+                                        {isUploading ? <><Loader2 className="spinning" size={16} /> Uploading...</> : 'Select CSV File'}
+                                        <input type="file" accept=".csv" onChange={handleFileUpload} style={{ display: 'none' }} disabled={isUploading} />
+                                    </label>
+                                </div>
+
+                                {/* MongoDB Sync */}
+                                <div className="data-source-box" style={{ background: 'rgba(30, 40, 32, 0.4)', padding: '1.25rem', borderRadius: '12px', border: '1px solid rgba(74, 222, 128, 0.1)' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+                                        <div className="mini-icon blue" style={{ width: '36px', height: '36px' }}><Database size={18} /></div>
+                                        <h4 style={{ margin: 0, fontSize: '0.95rem' }}>Direct DB Sync</h4>
+                                    </div>
+                                    <p style={{ fontSize: '0.8rem', color: '#9ca3af', marginBottom: '1rem' }}>Pull the latest inventory items securely from MongoDB.</p>
+                                    <button 
+                                        className="save-btn" 
+                                        style={{ width: '100%', justifyContent: 'center', background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)', color: 'white' }} 
+                                        onClick={handleMongoSync}
+                                        disabled={isSyncing}
+                                    >
+                                        {isSyncing ? <><Loader2 className="spinning" size={16} /> Syncing...</> : 'Sync from MongoDB'}
+                                    </button>
+                                </div>
+
+                                {/* Import from Web */}
+                                <div className="data-source-box" style={{ background: 'rgba(30, 40, 32, 0.4)', padding: '1.25rem', borderRadius: '12px', border: '1px solid rgba(74, 222, 128, 0.1)' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+                                        <div className="mini-icon purple" style={{ width: '36px', height: '36px', background: 'rgba(168, 85, 247, 0.15)', color: '#a855f7' }}><LinkIcon size={18} /></div>
+                                        <h4 style={{ margin: 0, fontSize: '0.95rem' }}>Fetch from API / URL</h4>
+                                    </div>
+                                    <p style={{ fontSize: '0.8rem', color: '#9ca3af', marginBottom: '1rem' }}>Download remote CSV datasets via an exposed raw URL.</p>
+                                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                        <input 
+                                            type="url" 
+                                            placeholder="https://..." 
+                                            value={webUrl}
+                                            onChange={(e) => setWebUrl(e.target.value)}
+                                            style={{ flex: 1, padding: '0.55rem', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(0,0,0,0.2)', color: 'white', fontSize: '0.85rem' }} 
+                                        />
+                                        <button 
+                                            className="save-btn" 
+                                            style={{ background: 'rgba(255, 255, 255, 0.1)', color: 'white', padding: '0.55rem 0.75rem' }}
+                                            onClick={handleWebFetch}
+                                            disabled={isFetchingUrl}
+                                        >
+                                            {isFetchingUrl ? <Loader2 className="spinning" size={16} /> : 'Fetch'}
+                                        </button>
                                     </div>
                                 </div>
                             </div>

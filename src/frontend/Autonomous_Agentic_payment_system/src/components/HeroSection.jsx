@@ -30,7 +30,7 @@ function HeroSection() {
         <div className="hero-buttons">
           <Link to="/control-panel" className="btn-primary">
             <Zap size={18} />
-            Start trial now
+            Start now
           </Link>
           <a
             href="https://drive.google.com/file/d/10bZdTYxfNd5ZLhjChRADZy-OaPW0dlhX/view?usp=sharing"

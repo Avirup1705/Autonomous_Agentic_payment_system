@@ -17,11 +17,14 @@ const { http, createPublicClient } = require("viem");
 const { polygonAmoy } = require("viem/chains");
 const { privateKeyToAccount } = require("viem/accounts");
 
+const jwt = require("jsonwebtoken");
 const User = require("./models/user");
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+
+const JWT_SECRET = process.env.JWT_SECRET || "your_super_secret_key";
 
 /* -------------------- DATABASE -------------------- */
 
@@ -30,12 +33,10 @@ mongoose
   .then(() => console.log("✅ MongoDB Connected"))
   .catch(err => console.error("❌ MongoDB Error:", err));
 
-/* -------------------- INVENTORY -------------------- */
+/* -------------------- INVENTORY & SESSIONS -------------------- */
 
 let inventory = { Milk: 10, Bread: 5 };
 let smartAccountClient = null;
-
-/* -------------------- DEFAULT SESSION (FALLBACK) -------------------- */
 
 const sessions = {
   shop_123: {
@@ -47,55 +48,62 @@ const sessions = {
   }
 };
 
-/* -------------------- AUTH (WHATSAPP BASED) -------------------- */
+/* -------------------- AUTH -------------------- */
 
-app.post("/api/auth/signin", async (req, res) => {
+// Register
+app.post("/api/auth/register", async (req, res) => {
   try {
-    const { name, whatsapp, walletAddress, privateKey } = req.body;
+    const { name, email, password } = req.body;
 
-    if (!name || !whatsapp || !walletAddress || !privateKey) {
-      return res.status(400).json({ error: "All fields required" });
+    if (!name || !email || !password) {
+      return res.status(400).json({ error: "All fields are required" });
     }
 
-    let user = await User.findOne({ whatsapp });
-
-    if (user) {
-      const valid = await bcrypt.compare(privateKey, user.privateKeyHash);
-      if (!valid) {
-        return res.status(401).json({ error: "Invalid credentials" });
-      }
-
-      user.lastLoginAt = new Date();
-      await user.save();
-
-      return res.json({
-        success: true,
-        message: "Login successful",
-        user: {
-          name: user.name,
-          whatsapp: user.whatsapp,
-          walletAddress: user.walletAddress
-        }
-      });
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ error: "User already exists" });
     }
 
-    const hash = await bcrypt.hash(privateKey, 10);
-
-    user = await User.create({
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({
       name,
-      whatsapp,
-      walletAddress,
-      privateKeyHash: hash
+      email,
+      password: hashedPassword
     });
+
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1d" });
 
     res.status(201).json({
       success: true,
-      message: "User registered",
-      user: {
-        name,
-        whatsapp,
-        walletAddress
-      }
+      token,
+      user: { id: user._id, name: user.name, email: user.email }
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Login
+app.post("/api/auth/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ error: "Invalid credentials" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ error: "Invalid credentials" });
+    }
+
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1d" });
+
+    res.json({
+      success: true,
+      token,
+      user: { id: user._id, name: user.name, email: user.email }
     });
   } catch (err) {
     res.status(500).json({ error: err.message });

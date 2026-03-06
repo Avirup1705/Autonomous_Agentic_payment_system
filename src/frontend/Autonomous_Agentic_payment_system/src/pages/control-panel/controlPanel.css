@@ -1816,6 +1816,20 @@
     color: #f87171;
 }
 
+/* Animations */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spinning {
+    animation: spin 1s linear infinite;
+}
+
 /* ========== RESPONSIVE ========== */
 @media (max-width: 1200px) {
     .cp-dashboard {

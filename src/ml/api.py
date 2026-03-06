@@ -8,19 +8,23 @@ from pathlib import Path
 
 import pandas as pd
 import requests
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from apscheduler.schedulers.background import BackgroundScheduler
 from dotenv import load_dotenv
+import pymongo
+import io
 
 # -------------------------------------------------
 # ENV + PATH
 # -------------------------------------------------
-load_dotenv()
-
 BASE_DIR = Path(__file__).resolve().parents[1]
 if str(BASE_DIR) not in sys.path:
     sys.path.append(str(BASE_DIR))
+
+# Load .env from backend explicitly
+backend_env_path = BASE_DIR / "backend" / ".env"
+load_dotenv(dotenv_path=backend_env_path)
 
 # -------------------------------------------------
 # INTERNAL IMPORTS
@@ -72,13 +76,8 @@ app = FastAPI(title="Payventory – Agentic Commerce Engine")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://localhost:5174",
-        "http://127.0.0.1:5173",
-        "http://127.0.0.1:5174",
-    ],
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -372,6 +371,96 @@ def simulate(tx: TransactionRequest):
     result = simulate_transaction(tx, user)
     log_event("TX_SIMULATION", result)
     return result
+
+# =================================================
+# DATA SOURCE INTEGRATION
+# =================================================
+
+def _reload_inventory_stats():
+    global INVENTORY_STATS
+    if OWNER_INVENTORY_CSV.exists():
+        df = pd.read_csv(OWNER_INVENTORY_CSV)
+        INVENTORY_STATS = {
+            "healthy": int((df["current_stock"] > 20).sum()),
+            "low": int(((df["current_stock"] <= 20) & (df["current_stock"] > 5)).sum()),
+            "critical": int((df["current_stock"] <= 5).sum()),
+        }
+
+@app.post("/api/data/upload-csv")
+async def upload_csv(file: UploadFile = File(...)):
+    if not file.filename.endswith('.csv'):
+        raise HTTPException(status_code=400, detail="Only CSV files are allowed.")
+    
+    content = await file.read()
+    try:
+        df = pd.read_csv(io.BytesIO(content))
+        
+        # Basic validation
+        required_cols = {"product_name", "category", "current_stock", "avg_daily_sales", "sale_price", "supplier_id"}
+        if not required_cols.issubset(df.columns):
+            missing = required_cols - set(df.columns)
+            raise HTTPException(status_code=400, detail=f"Missing required columns: {missing}")
+            
+        df.to_csv(OWNER_INVENTORY_CSV, index=False)
+        _reload_inventory_stats()
+        return {"status": "success", "message": "CSV uploaded successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/data/sync-mongo")
+async def sync_mongo():
+    try:
+        mongo_uri = os.getenv("MONGO_URI")
+        if not mongo_uri:
+            raise HTTPException(status_code=500, detail="MONGO_URI not configured.")
+        
+        client = pymongo.MongoClient(mongo_uri)
+        db = client.get_database() # defaults to db from URI
+        
+        # Assuming an 'inventory' collection exists representing the manager's store
+        inventory_collection = db["inventory"]
+        cursor = inventory_collection.find({}, {"_id": 0})
+        data = list(cursor)
+        
+        if not data:
+            raise HTTPException(status_code=404, detail="No inventory data found in MongoDB.")
+            
+        df = pd.DataFrame(data)
+        
+        required_cols = {"product", "category", "current_stock", "avg_daily_sales"}
+        if not required_cols.issubset(df.columns) and not {"product_name", "category", "current_stock", "avg_daily_sales"}.issubset(df.columns):
+            raise HTTPException(status_code=400, detail="Database data missing required columns like 'current_stock' or 'product'.")
+            
+        df.to_csv(OWNER_INVENTORY_CSV, index=False)
+        _reload_inventory_stats()
+        
+        return {"status": "success", "message": "Synced successfully with MongoDB", "records": len(df)}
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database sync failed: {str(e)}")
+
+@app.post("/api/data/fetch-web")
+async def fetch_web(payload: dict):
+    url = payload.get("url")
+    if not url:
+         raise HTTPException(status_code=400, detail="URL is required.")
+    
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        
+        df = pd.read_csv(io.StringIO(response.text))
+        
+        required_cols = {"product", "category", "current_stock", "avg_daily_sales"}
+        if not required_cols.issubset(df.columns) and not {"product_name", "category", "current_stock", "avg_daily_sales"}.issubset(df.columns):
+            raise HTTPException(status_code=400, detail="Fetched URL missing required columns like 'current_stock' or 'product'.")
+
+        df.to_csv(OWNER_INVENTORY_CSV, index=False)
+        _reload_inventory_stats()
+        
+        return {"status": "success", "message": "Data fetched successfully from Web."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch data: {str(e)}")
 
 # =================================================
 # AUTO RUN

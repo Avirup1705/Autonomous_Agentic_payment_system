@@ -134,7 +134,6 @@ def run_agent(config: Optional[dict] = None) -> dict:
         )
     )
 
-    supplier_df = supplier_df.sort_values("supplier_cost")
     if supplier_df.empty:
         logger.warning("No supplier inventory found in database! Please run seed script.")
         return {
@@ -143,6 +142,8 @@ def run_agent(config: Optional[dict] = None) -> dict:
             "reason": "No supplier inventory",
             "decisions": [],
         }
+
+    supplier_df = supplier_df.sort_values("supplier_cost")
 
     logger.info("Filtering and prioritizing SKUs...")
     owner_df = owner_df[

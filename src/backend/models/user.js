@@ -8,24 +8,35 @@ const UserSchema = new mongoose.Schema({
     trim: true
   },
 
-  // WhatsApp number as primary user identifier
-  whatsapp: {
+  email: {
     type: String,
     required: true,
     unique: true,
+    trim: true,
+    lowercase: true
+  },
+
+  password: {
+    type: String,
+    required: true
+  },
+
+  // WhatsApp number (optional for notifications)
+  whatsapp: {
+    type: String,
+    unique: true,
+    sparse: true,
     index: true
   },
 
-  // User wallet / smart account address
+  // User wallet / smart account address (optional, can be linked later)
   walletAddress: {
-    type: String,
-    required: true
+    type: String
   },
 
-  // Hashed private key (NEVER store raw key)
+  // Hashed private key (optional, for agentic functionality)
   privateKeyHash: {
-    type: String,
-    required: true
+    type: String
   },
 
   // Optional future extensions
