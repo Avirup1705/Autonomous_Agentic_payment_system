@@ -1,170 +1,76 @@
-# Autonomous Inventory Management & Agentic Payment System
+# 💰 Payventory: Autonomous Agentic Payment System
 
-An AI-powered inventory management platform that automatically monitors stock levels, predicts demand, triggers restocking, and executes supplier payments using autonomous agents and blockchain technology.
-
----
-
-# Problem
-
-Small retailers and supply chain operators often face challenges such as:
-
-• manual inventory tracking
-• delayed supplier payments
-• stock shortages or overstocking
-• inefficient procurement decisions
-
-These problems reduce operational efficiency and increase business risk.
+**Payventory** is an AI-powered inventory management platform that automatically monitors stock levels, predicts demand, triggers restocking, and executes supplier payments using autonomous agents and blockchain technology (Polygon Account Abstraction).
 
 ---
 
-# Solution
-
-This project introduces an **Autonomous Inventory Management System with Agentic Payments**.
-
-The system uses AI to monitor inventory levels, predict product demand, automatically place restocking orders, and execute supplier payments securely using blockchain infrastructure.
-
----
-
-# Key Features
-
-• AI-based inventory demand prediction
-• Autonomous restocking decisions
-• Agent-based payment execution
-• Blockchain transaction logging
-• Real-time inventory dashboard
-• Supplier management system
-• Fraud and anomaly detection
+## 🚀 Key Features
+- **🧠 AI Demand Prediction**: Uses historical data to forecast stock requirements for the next 7 days.
+- **🤖 Autonomous Agents**: Self-executing restock cycles based on pre-set human rules.
+- **⛓️ Agentic Payments**: Executes secure payments via Polygon Smart Accounts (ERC-4337).
+- **📊 Real-time Dashboard**: Live monitoring of inventory health, spent budget, and recent decisions.
+- **📱 WhatsApp Notifications**: Receive instant updates via Twilio whenever a restock occurs.
+- **🔐 Security Layer**: Budget-aware guards and transaction simulation before execution.
 
 ---
 
-# Tech Stack
-
-Frontend
-React + Vite + TypeScript
-
-Backend
-FastAPI / Node.js
-
-AI / ML
-Python (demand forecasting, anomaly detection)
-
-Blockchain
-Ethereum / Polygon Smart Contracts
-
-Database
-PostgreSQL / MongoDB
-
----
-## 🧠 System Architecture & Workflow
-
-```mermaid
-graph TD
-    A[Human Settings] -->|Configure Budgets/Rules| B(Control Panel)
-    B -->|Save to MongoDB| C[Global Config]
-    D[Inventory Data .CSV] -->|Historical Sales| E(AI Demand Forecast)
-    E -->|Predicted 7d Demand| F(Restock Agent)
-    C -->|Rules/Limits| F
-    F -->|Decide Restock| G{Security Layer}
-    G -->|Budget Valid?| H[Restricted Payment Intent]
-    H -->|Web3 Execution| I[Polygon Blockchain Payment]
-    I -->|Success| J[Update MongoDB & CSV]
-    J -->|Notification| K[WhatsApp Update]
-    J -->|Data Sync| L[Real-time Dashboard]
-```
-
-# How It Works
-
-1. Inventory levels are continuously monitored
-2. AI predicts upcoming demand
-3. System triggers restocking when inventory drops below threshold
-4. Supplier order is generated
-5. Autonomous agent executes payment
-6. Payment is recorded on blockchain
+## 🛠️ Tech Stack
+- **Frontend**: React + Vite + Lucide Icons + Recharts
+- **Backend**: Node.js + Express + Mongoose
+- **ML Engine**: Python + FastAPI + Pandas + APScheduler
+- **Blockchain**: Polygon (Amoy Testnet) + ZeroDev SDK (Account Abstraction)
+- **Database**: MongoDB (Atlas)
 
 ---
 
-# System Architecture
+## 📦 Installation & Setup
 
-```
-Inventory Dashboard
-        │
-        ▼
-Backend API
-        │
-        ▼
-AI Demand Prediction
-        │
-        ▼
-Autonomous Restocking Agent
-        │
-        ▼
-Smart Contract Payment
-        │
-        ▼
-Blockchain Network
-```
-
----
-
-# Project Structure
-
-```
-Autonomous_Agentic_payment_system
-│
-├── README.md
-├── LICENSE
-├── CONTRIBUTING.md
-├── CODE_OF_CONDUCT.md
-├── CHANGELOG.md
-│
-├── src
-│   ├── backend
-│   ├── frontend
-│   └── ml
-│
-├── docs
-├── tests
-├── examples
-└── .github
-```
-
----
-
-# Installation
-
-Clone the repository
-
-```
+### 1. Clone the Repo
+```bash
 git clone https://github.com/Avirup1705/Autonomous_Agentic_payment_system.git
-```
-
-Navigate to the project directory
-
-```
 cd Autonomous_Agentic_payment_system
 ```
 
----
+### 2. Environment Variables
+Create a `.env` file in `src/backend/.env` with the following:
+```env
+# MongoDB
+MONGO_URI=your_mongodb_uri
 
-## Backend Setup
+# Web3
+ZERODEV_PROJECT_ID=your_project_id
+SESSION_PRIVATE_KEY=your_key
+POLYGON_RPC_URL=https://rpc-amoy.polygon.technology
+SMART_ACCOUNT_ADDRESS=0x...
+SUPPLIER_ADDRESS=0x...
 
-Install dependencies
-
+# Notifications
+TWILIO_ACCOUNT_SID=...
+TWILIO_AUTH_TOKEN=...
+TWILIO_WHATSAPP_NUMBER=...
+USER_WHATSAPP_NUMBER=...
 ```
+
+### 3. Run the Services
+
+#### A. The Payventory Engine (Python ML)
+```bash
+# Install Python dependencies
 pip install -r requirements.txt
+
+# Run the API
+python -m uvicorn src.ml.api:app --reload --port 8000
 ```
 
-Run backend server
-
+#### B. The Backend (Node.js)
+```bash
+cd src/backend
+npm install
+node server.js
 ```
-uvicorn main:app --reload
-```
 
----
-
-## Frontend Setup
-
-```
+#### C. The Frontend (React)
+```bash
 cd src/frontend/Autonomous_Agentic_payment_system
 npm install
 npm run dev
@@ -172,64 +78,23 @@ npm run dev
 
 ---
 
-# Environment Variables
+## 🤝 How to Contribute
+We welcome contributions to Payventory! Here’s how you can help:
 
-Create a `.env` file based on `.env.example`
+1. **Fork the Repository**: Create your own copy of the project.
+2. **Create a Feature Branch**: `git checkout -b feature/amazing-feature`
+3. **Commit Your Changes**: `git commit -m 'Add some amazing feature'`
+4. **Push to the Branch**: `git push origin feature/amazing-feature`
+5. **Open a Pull Request**: Describe your changes and why they are needed.
 
-Example:
-
-```
-DATABASE_URL=
-BLOCKCHAIN_RPC_URL=
-PRIVATE_KEY=
-SUPPLIER_ADDRESS=
-```
+Please ensure your code follows the [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md).
 
 ---
 
-# AI / ML Module
-
-The machine learning module performs:
-
-• demand forecasting
-• anomaly detection
-• inventory optimization
-
-Datasets are stored in:
-
-```
-src/ml/data
-```
+## 📈 Roadmap
+Check out the [ROADMAP.md](./ROADMAP.md) for future plans, including multi-warehouse support and on-chain decision auditing.
 
 ---
 
-
-# Contributing
-
-We welcome contributions.
-
-Please read:
-
-```
-CONTRIBUTING.md
-```
-
-before opening a pull request.
-
----
-
-# Contributors
-
-<a href="https://github.com/Avirup1705/Autonomous_Agentic_payment_system/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Avirup1705/Autonomous_Agentic_payment_system" />
-</a>
-
----
-
-# License
-
-Apache License 2.0
-
-See the LICENSE file for details.
-
----
+## 📜 License
+Licensed under the **Apache License 2.0**. See [LICENSE](./LICENSE) for details.
