@@ -40,14 +40,6 @@ yarn-error.log*
 dist/
 
 
-# Dataset / ML files
-src/ml/data/raw_dataset/*
-src/ml/data/processed_dataset/*
-
-
-!src/ml/data/raw_dataset/.keep
-!src/ml/data/processed_dataset/.keep
-
 
 # IDE files
 .vscode/
