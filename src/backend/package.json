@@ -12,12 +12,19 @@
   "type": "commonjs",
   "dependencies": {
     "@prisma/client": "^7.4.2",
+    "@zerodev/ecdsa-validator": "^5.4.9",
     "@zerodev/permissions": "^5.6.3",
     "@zerodev/sdk": "^5.5.7",
+    "axios": "^1.13.6",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "ethers": "^6.16.0",
+    "express": "^5.2.1",
+    "mongoose": "^9.2.4",
     "node-cron": "^4.2.1",
     "pymongo": "^0.0.1-security",
-    "viem": "^2.47.0"
+    "viem": "^2.47.0",
+    "web3": "^4.16.0"
   }
 }

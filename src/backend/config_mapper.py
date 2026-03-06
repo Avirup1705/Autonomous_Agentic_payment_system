@@ -1,4 +1,4 @@
-from ai.default_config import DEFAULT_CONFIG
+from src.ml.default_config import DEFAULT_CONFIG
 
 
 def frontend_to_agent_config(frontend_cfg: dict) -> dict:

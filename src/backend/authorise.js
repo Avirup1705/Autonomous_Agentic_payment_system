@@ -36,6 +36,11 @@ async function main() {
 
     console.log("⏳ Creating the Shopkeeper's Permission Slip...");
 
+    // Print SESSION_PRIVATE_KEY
+    console.log("SESSION_PRIVATE_KEY:", agentPrivateKey);
+    // Print sessionKeyAccount address
+    console.log("SESSION_ACCOUNT_ADDRESS:", sessionKeyAccount.address);
+
     const ecdsaValidator = await signerToEcdsaValidator(publicClient, {
         signer: masterSigner,
         entryPoint,

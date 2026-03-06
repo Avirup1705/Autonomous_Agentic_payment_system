@@ -1,5 +1,5 @@
 from datetime import datetime
-from backend.db import config_collection, agent_decisions_collection
+from src.backend.db import config_collection, agent_decisions_collection
 
 CONFIG_ID = "GLOBAL_AGENT_CONFIG"
 STATS_ID = "GLOBAL_AGENT_STATS"
