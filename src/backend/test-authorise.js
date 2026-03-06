@@ -8,7 +8,7 @@ const { KERNEL_V3_1, getEntryPoint } = require("@zerodev/sdk/constants");
 const { deserializePermissionAccount } = require("@zerodev/permissions");
 const { toECDSASigner } = require("@zerodev/permissions/signers");
 
-async function testAutoPay() {
+async function testPayventory() {
     console.log("--- Environment Check ---");
     console.log("PROJECT_ID: Found");
     console.log("-------------------------\n");
@@ -100,7 +100,7 @@ const kernelClient = createKernelAccountClient({
 //     // THE KEY LINE: This activates the "Sponsor All" policy you just saved
 //     paymaster: { type: "SPONSOR" } 
 // });
-testAutoPay().catch((err) => {
+testPayventory().catch((err) => {
     console.error("❌ Error Details:");
     console.error(err);
 });

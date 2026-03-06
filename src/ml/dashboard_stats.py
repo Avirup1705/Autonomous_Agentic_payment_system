@@ -4,8 +4,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from restock_agent import run_agent
-from default_config import DEFAULT_CONFIG
+from src.ml.restock_agent import run_agent
+from src.ml.default_config import DEFAULT_CONFIG
 
 app = FastAPI(title="Payventory Dashboard Stats")
 

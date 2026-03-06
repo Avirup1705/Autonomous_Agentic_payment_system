@@ -1,8 +1,8 @@
 from datetime import datetime
 from typing import Optional
 
-from restock_agent import run_agent
-from default_config import DEFAULT_CONFIG
+from src.ml.restock_agent import run_agent
+from src.ml.default_config import DEFAULT_CONFIG
 
 # =================================================
 # DEMO CONFIG (Backend-owned defaults)
