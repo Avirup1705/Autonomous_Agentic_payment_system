@@ -131,6 +131,49 @@ print(response.json())
 
 ---
 
+## 🧠 Machine Learning Engine Documentation
+
+Payventory relies on a predictive engine to forecast inventory demand. Below are the details regarding the data, architecture, and evaluation of this model.
+
+### 📊 Dataset Description
+The model is trained on the **[BigBasket Entire Product List (28k Datapoints)](https://www.kaggle.com/datasets/surajjha101/bigbasket-entire-product-list-28k-datapoints)** from Kaggle.
+- **Source**: Kaggle (BigBasket dataset)
+- **Size**: ~28,000 product retail records.
+- **Preprocessing**: 
+  - Products with 0 average daily sales are filtered out.
+  - Engineered features: **Base Weekly Demand** (daily average * 7), **Stock Coverage Days** (current stock / daily sales), **Category Price Ratio** (product price vs category average), and **Momentum** (log-scaled daily sales).
+  - Synthetic noise and simple weekend seasonality are injected to simulate realistic 7-day target variance. Categorical columns (`category`, `supplier_id`) are transformed using `LabelEncoder`.
+
+### 🏗️ Model Architecture
+Our demand predictor utilizes a **Ridge Regression model** (`sklearn.linear_model.Ridge`) with `alpha=1.0`.
+- **Reasoning**: We chose a regularized linear model over complex deep learning architectures (like LSTMs) because tabular retail metadata combined with engineered heuristics (momentum, price elasticity, stock pressure) exhibits mostly linear relationships with the 7-day demand target. Ridge regression introduces an L2 penalty which prevents overfitting on our synthesized features, trains exceedingly fast, and offers high interpretability for auditing Agentic decisions.
+
+### 🔄 Reproducibility Instructions
+To retrain the model from scratch on your own machine:
+1. Ensure your hardware meets the minimal requirements: A standard CPU (no GPU required) with at least 4GB of RAM is sufficient.
+2. Navigate to the ML directory and install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Run the training script:
+   ```bash
+   python src/ml/train.py
+   ```
+This will automatically extract features, fit the Ridge model, and output the updated `demand_model.joblib` artifact into the `src/ml/models/` directory.
+
+### 📈 Evaluation Metrics (Explained)
+We use a separate evaluation script (`src/ml/evaluate.py`) which measures three metrics:
+- **MAE (Mean Absolute Error)**: This tells us, on average, how many physical units our prediction is off by. E.g., an MAE of 5.0 means our forecast is usually under or over by 5 items.
+- **RMSE (Root Mean Squared Error)**: Similar to MAE, but it heavily penalizes *large* errors. If RMSE is much higher than MAE, it means the model occasionally makes massive miscalculations.
+- **R² Score**: This represents how much of the demand variance is explained by our model compared to just guessing the average every time. A score closer to `1.0` means the model is highly accurate at capturing trends.
+
+### ⚠️ Limitations, Biases, and Failure Modes
+- **Cold Start Problem (Limitation)**: The model relies heavily on historical `avg_daily_sales`. For completely new products with no sales history, the model will struggle to generate an accurate forecast, defaulting to minimal assumptions.
+- **Trend Lag (Bias)**: By relying on smoothed averages (momentum), the model can be slow to react to spontaneous viral trends or instant shifts in consumer behavior (e.g., a product blowing up on TikTok overnight).
+- **Stockout Blindness (Failure Mode)**: If a product was out of stock for 5 days, its daily sales average drops to 0, which the model misinterprets as "zero demand" rather than "zero supply". We proxy a `stock_pressure` heuristic to combat this, but prolonged stockouts may still cause the model to systematically under-order.
+
+---
+
 ## 🤝 How to Contribute
 We welcome contributions to Payventory! Here’s how you can help:
 
