@@ -1,0 +1,21 @@
+{
+  "agent_config": {
+    "restock_threshold": 0.15,
+    "confidence_interval": 0.95,
+    "max_weekly_budget_usd": 5000,
+    "allowed_suppliers": [
+      "0x1234567890abcdef1234567890abcdef12345678",
+      "0xabcdef1234567890abcdef1234567890abcdef12"
+    ],
+    "notification_preferences": {
+      "whatsapp_enabled": true,
+      "alert_on_tx_failure": true,
+      "alert_on_budget_warning": true
+    }
+  },
+  "model_parameters": {
+    "algorithm": "prophet",
+    "seasonality_mode": "multiplicative",
+    "changepoint_prior_scale": 0.05
+  }
+}
