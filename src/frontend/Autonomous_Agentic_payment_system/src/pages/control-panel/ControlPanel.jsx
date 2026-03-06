@@ -30,7 +30,7 @@ import {
 } from "lucide-react";
 import "./controlPanel.css";
 
-const rawUrl = import.meta.env.VITE_BACKEND_URL || "https://payventory-backend.onrender.com";
+const rawUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 const API_BASE_URL = rawUrl.replace(/\/$/, "");
 
 // Default configuration
@@ -190,7 +190,7 @@ function ControlPanel() {
             alert("Configuration saved successfully! ✅");
         } catch (err) {
             console.error("Connection Error:", err);
-            alert("❌ Cannot reach backend! Please ensure 'python -m uvicorn ai.api:app --reload' is running in your terminal.");
+            alert("❌ Cannot reach Payventory Engine! Please ensure 'python -m uvicorn src.ml.api:app --reload --port 8000' is running in your terminal.");
         }
     };
 

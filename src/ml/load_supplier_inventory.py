@@ -11,10 +11,10 @@ if str(BASE_DIR) not in sys.path:
 
 load_dotenv(BASE_DIR / "backend" / ".env")
 
-from backend.db import supplier_inventory_collection
+from src.backend.db import supplier_inventory_collection
 
 
-DATA_DIR = BASE_DIR / "ai" / "data" / "processed_dataset"
+DATA_DIR = BASE_DIR / "src" / "ml" / "data" / "processed_dataset"
 
 SUPPLIERS = {
     "SUP1": DATA_DIR / "inventory_sup1.csv",

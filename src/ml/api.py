@@ -55,7 +55,7 @@ LAST_AGENT_RUN_AT: Optional[datetime] = None
 # OWNER INVENTORY (CSV)
 # -------------------------------------------------
 OWNER_INVENTORY_CSV = (
-    BASE_DIR / "ai" / "data" / "processed_dataset" / "inventory.csv"
+    BASE_DIR / "ml" / "data" / "processed_dataset" / "inventory.csv"
 )
 
 # -------------------------------------------------
@@ -72,7 +72,12 @@ app = FastAPI(title="Payventory – Agentic Commerce Engine")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:5174",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -122,12 +127,12 @@ def startup():
     saved = load_config()
     if saved:
         CURRENT_CONFIG = saved
-        print("🧠 Loaded agent config from MongoDB")
+        print("[AGENT] Loaded agent config from MongoDB")
 
     stats = load_stats()
     TOTAL_SPENT_INR = stats.get("total_spent_inr", 0)
     TRANSACTIONS = load_transactions(limit=100)
-    print(f"💰 Loaded total spent: ₹{TOTAL_SPENT_INR}")
+    print(f"[STATS] Loaded total spent: INR {TOTAL_SPENT_INR}")
 
     if OWNER_INVENTORY_CSV.exists():
         df = pd.read_csv(OWNER_INVENTORY_CSV)
@@ -138,8 +143,7 @@ def startup():
         }
 
     days = CURRENT_CONFIG.get("autoRunDays", 0) if CURRENT_CONFIG else 0
-    # Migrate or default: try autoRunMins, then old autoRunInterval, then 1000
-    mins = 1000
+    mins = 1
     if CURRENT_CONFIG:
         if "autoRunMins" in CURRENT_CONFIG:
             mins = CURRENT_CONFIG["autoRunMins"]
@@ -153,12 +157,12 @@ def startup():
 
     scheduler.add_job(auto_run, "interval", seconds=total_seconds, id="restock_job")
     scheduler.start()
-    print(f"🟢 Scheduler started with interval: {days}d {mins}m {secs}s ({total_seconds} seconds)")
+    print(f"[STARTUP] Scheduler started with interval: {days}d {mins}m {secs}s ({total_seconds} seconds)")
 
 @app.on_event("shutdown")
 def shutdown():
     scheduler.shutdown()
-    print("🔴 Scheduler stopped")
+    print("[SHUTDOWN] Scheduler stopped")
 
 # =================================================
 # CONFIG
@@ -257,6 +261,8 @@ async def run_restock(execute_payments: bool = False):
         return result
 
     owner_df = pd.read_csv(OWNER_INVENTORY_CSV)
+    if "product_name" in owner_df.columns:
+        owner_df = owner_df.rename(columns={"product_name": "product"})
 
     restocked_details = []
     for d in result["decisions"]:
@@ -304,7 +310,12 @@ async def run_restock(execute_payments: bool = False):
         owner_df.loc[owner_df["product"] == product, "current_stock"] += qty
         restocked_details.append(f"• {product}: {qty} units")
 
-    owner_df.to_csv(OWNER_INVENTORY_CSV, index=False)
+    # Rename back for saving if needed, but keeping it as 'product' is also fine if CSV follows it.
+    # Looking at the original CSV, it had 'product_name'. Let's rename back to be safe.
+    save_df = owner_df.copy()
+    if "product" in save_df.columns:
+        save_df = save_df.rename(columns={"product": "product_name"})
+    save_df.to_csv(OWNER_INVENTORY_CSV, index=False)
 
     INVENTORY_STATS = {
         "healthy": int((owner_df["current_stock"] > 20).sum()),

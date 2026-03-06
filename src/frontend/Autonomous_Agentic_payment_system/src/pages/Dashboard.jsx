@@ -6,12 +6,12 @@ import {
 } from "recharts";
 import {
   LayoutDashboard, ShoppingCart, BarChart2, MessageSquare, Globe, Users, Settings, Bell, LogOut,
-  ChevronDown, Search, Activity, MoreHorizontal, ArrowUpRight, ArrowDownRight, Wallet, Package, Menu, TrendingUp, X
+  ChevronDown, Search, Activity, MoreHorizontal, ArrowUpRight, ArrowDownRight, Wallet, Package, Menu, TrendingUp, X, AlertTriangle
 } from "lucide-react";
 import "./Dashboard.css";
 
 // API Config
-const rawUrl = import.meta.env.VITE_BACKEND_URL || "https://payventory-backend.onrender.com";
+const rawUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 const API_BASE_URL = rawUrl.replace(/\/$/, ""); // Strip trailing slash
 
 // Theme Colors

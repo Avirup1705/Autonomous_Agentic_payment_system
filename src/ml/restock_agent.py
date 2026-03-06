@@ -51,7 +51,10 @@ def inr_to_wei(inr: float) -> str:
 def load_owner_inventory() -> pd.DataFrame:
     if not OWNER_INVENTORY.exists():
         raise FileNotFoundError("Owner inventory.csv missing")
-    return pd.read_csv(OWNER_INVENTORY)
+    df = pd.read_csv(OWNER_INVENTORY)
+    if "product_name" in df.columns:
+        df = df.rename(columns={"product_name": "product"})
+    return df
 
 
 def is_critical(row: pd.Series) -> bool:
@@ -132,6 +135,14 @@ def run_agent(config: Optional[dict] = None) -> dict:
     )
 
     supplier_df = supplier_df.sort_values("supplier_cost")
+    if supplier_df.empty:
+        logger.warning("No supplier inventory found in database! Please run seed script.")
+        return {
+            "cycle_id": cycle_id,
+            "status": "SKIPPED",
+            "reason": "No supplier inventory",
+            "decisions": [],
+        }
 
     logger.info("Filtering and prioritizing SKUs...")
     owner_df = owner_df[
