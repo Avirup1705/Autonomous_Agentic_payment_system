@@ -1,8 +1,8 @@
-<img width="1899" height="1013" alt="image" src="https://github.com/user-attachments/assets/6be0cc9b-b2b8-4b0e-bcef-ae531cfa15aa" />
-<img width="1884" height="1061" alt="image" src="https://github.com/user-attachments/assets/0c0211a0-de14-474d-b534-d9eb90778447" />
-<img width="1871" height="1035" alt="image" src="https://github.com/user-attachments/assets/a4ecab7f-042b-4d97-9958-0d64f0028d8d" />
-
 # 💰 Payventory: Autonomous Agentic Payment System
+
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/Avirup1705/Autonomous_Agentic_payment_system)
 
 **Payventory** is an AI-powered inventory management platform that automatically monitors stock levels, predicts demand, triggers restocking, and executes supplier payments using autonomous agents and blockchain technology (Polygon Account Abstraction).
 
@@ -27,6 +27,30 @@
 
 ---
 
+## 📂 Project Structure
+
+```text
+Autonomous_Agentic_payment_system/
+├── .github/                # GitHub templates (Issues, PRs)
+├── docs/                   # Extended documentation & architecture diagrams
+├── examples/               # Usage examples and sample configurations
+├── src/
+│   ├── backend/            # Express.js server and Web3 logic
+│   ├── frontend/           # React dashboard application
+│   └── ml/                 # Python prediction engine and agents
+├── tests/                  # Unit, integration, and E2E tests
+├── .env.example            # Template for environment variables
+├── CHANGELOG.md            # History of project changes
+├── CODE_OF_CONDUCT.md      # Community behavior standards
+├── CONTRIBUTING.md         # Contribution guidelines
+├── LICENSE                 # Apache 2.0 License
+├── README.md               # Primary project documentation
+├── ROADMAP.md              # Future plans and project vision
+└── requirements.txt        # Python dependencies
+```
+
+---
+
 ## 📦 Installation & Setup
 
 ### 1. Clone the Repo
@@ -36,48 +60,10 @@ cd Autonomous_Agentic_payment_system
 ```
 
 ### 2. Environment Variables
-Create a `.env` file in `src/backend/.env` with the following:
-```env
-# MongoDB
-MONGO_URI=your_mongodb_uri
-
-# Web3
-ZERODEV_PROJECT_ID=your_project_id
-SESSION_PRIVATE_KEY=your_key
-POLYGON_RPC_URL=https://rpc-amoy.polygon.technology
-SMART_ACCOUNT_ADDRESS=0x...
-SUPPLIER_ADDRESS=0x...
-
-# Notifications
-TWILIO_ACCOUNT_SID=...
-TWILIO_AUTH_TOKEN=...
-TWILIO_WHATSAPP_NUMBER=...
-USER_WHATSAPP_NUMBER=...
-```
-
-### 3. Run the Services
-
-#### A. The Payventory Engine (Python ML)
+Copy the `.env.example` file to `.env` in the appropriate directories and fill in your keys:
 ```bash
-# Install Python dependencies
-pip install -r requirements.txt
-
-# Run the API
-python -m uvicorn src.ml.api:app --reload --port 8000
-```
-
-#### B. The Backend (Node.js)
-```bash
-cd src/backend
-npm install
-node server.js
-```
-
-#### C. The Frontend (React)
-```bash
-cd src/frontend/Autonomous_Agentic_payment_system
-npm install
-npm run dev
+cp .env.example src/backend/.env
+# Also copy to src/ml/ if needed
 ```
 
 ---
@@ -89,7 +75,7 @@ We welcome contributions to Payventory! Here’s how you can help:
 2. **Create a Feature Branch**: `git checkout -b feature/amazing-feature`
 3. **Commit Your Changes**: `git commit -m 'Add some amazing feature'`
 4. **Push to the Branch**: `git push origin feature/amazing-feature`
-5. **Open a Pull Request**: Describe your changes and why they are needed.
+5. **Open a Pull Request**: Describe your changes using our [PULL_REQUEST_TEMPLATE](.github/PULL_REQUEST_TEMPLATE.md).
 
 Please ensure your code follows the [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md).
 
@@ -97,6 +83,14 @@ Please ensure your code follows the [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md).
 
 ## 📈 Roadmap
 Check out the [ROADMAP.md](./ROADMAP.md) for future plans, including multi-warehouse support and on-chain decision auditing.
+
+---
+
+## 🙏 Acknowledgements
+- [Polygon](https://polygon.technology/) - For the scalable blockchain infrastructure.
+- [ZeroDev](https://zerodev.app/) - For the Account Abstraction SDK.
+- [Twilio](https://www.twilio.com/) - For the notification service.
+- All contributors who help make Payventory better!
 
 ---
 
