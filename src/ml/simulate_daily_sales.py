@@ -7,8 +7,10 @@ from datetime import datetime
 
 
 
-BASE_DIR = Path(__file__).resolve().parents[1]
-INVENTORY_PATH = BASE_DIR / "data" / "processed_dataset" / "inventory.csv"
+
+# Resolve path relative to project root
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+INVENTORY_PATH = PROJECT_ROOT / "src" / "ml" / "data" / "processed_dataset" / "inventory.csv"
 
 WEEKEND_BOOST = 1.2        # 20% more sales on weekends
 NOISE_STD = 0.2            # randomness
