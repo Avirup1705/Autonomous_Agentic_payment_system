@@ -1,3 +1,7 @@
+<img width="1899" height="1013" alt="image" src="https://github.com/user-attachments/assets/6be0cc9b-b2b8-4b0e-bcef-ae531cfa15aa" />
+<img width="1884" height="1061" alt="image" src="https://github.com/user-attachments/assets/0c0211a0-de14-474d-b534-d9eb90778447" />
+<img width="1871" height="1035" alt="image" src="https://github.com/user-attachments/assets/a4ecab7f-042b-4d97-9958-0d64f0028d8d" />
+
 # Autonomous Inventory Management & Agentic Payment System
 
 An AI-powered inventory management platform that automatically monitors stock levels, predicts demand, triggers restocking, and executes supplier payments using autonomous agents and blockchain technology.
