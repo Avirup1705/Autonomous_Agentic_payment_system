@@ -1,113 +1,170 @@
-# Project Roadmap
+# ROADMAP.md
 
-This roadmap outlines the development path for the **AI Autonomous Procurement System**, transforming the hackathon prototype into a scalable open-source platform.
+# Autonomous AI Investment Agent — Project Roadmap
 
----
+This project aims to build an **AI-powered autonomous investment agent** that manages a user-funded smart account and automatically purchases assets based on demand signals.
 
-# Version 1.0 (Hackathon Submission)
+The system integrates:
 
-Current implemented features:
-
-- AI-based procurement decision engine
-- Inventory management system
-- Supplier demand processing
-- Smart Account with fixed user budget
-- Automated purchasing logic
-- Blockchain payment simulation using POL tokens
-- React + Tailwind frontend dashboard
+* AI Demand Prediction
+* Autonomous AI Agents
+* Protocol-Owned Liquidity (POL)
+* Blockchain Smart Contracts
+* Secure Automated Payments
 
 ---
 
-# System Workflow (Current Architecture)
+# System Architecture Flow
 
 ```mermaid
 flowchart TD
 
-A[Supplier Demand] --> B[Inventory Check]
+A[User Creates Smart Account] --> B[User Deposits Funds]
+B --> C[Funds Stored in POL Liquidity Vault]
 
-B --> C{Inventory Sufficient?}
+C --> D[AI Demand Prediction Model]
+D --> E[Demand Signal Generated]
 
-C -->|Yes| D[No Purchase Required]
+E --> F[AI Agent Decision Engine]
 
-C -->|No| E[AI Procurement Decision]
+F --> G{Investment Decision}
 
-E --> F[Fetch Market Price]
+G -->|Demand High| H[Generate Buy Order]
+G -->|Demand Low| I[No Action]
 
-F --> G{Smart Account Balance Enough?}
+H --> J[Encrypt Trade Request]
 
-G -->|No| H[Purchase Blocked]
+J --> K[Send Transaction to Smart Contract]
 
-G -->|Yes| I[Execute Purchase]
+K --> L{Smart Contract Validation}
 
-I --> J[POL Payment Transaction]
+L -->|Valid| M[Release POL Liquidity]
+L -->|Invalid| N[Reject Transaction]
 
-J --> K[Update Inventory]
+M --> O[Execute Purchase via Broker / DEX]
 
-K --> L[Update Smart Account Balance]
+O --> P[Asset Added to User Portfolio]
 
-AI Demand Forecasting
-Future AI improvements will include:
-Predicting supplier demand before it occurs
-Market price trend analysis
-Intelligent purchasing timing
-Flow:
-flowchart TD
+P --> Q[Transaction Stored on Blockchain]
 
-A[Historical Demand Data] --> B[AI Forecast Model]
+Q --> R[Notification Sent to User]
 
-B --> C[Predicted Future Demand]
+```
 
-C --> D[Procurement Planning]
+---
 
-D --> E[Optimized Purchase Timing]
+# Version 1.0 — Hackathon Submission
 
-Smart Contract Payment System
-Upgrade the blockchain system to use smart contracts for secure payments.
+The first version focuses on demonstrating the **core autonomous investment system**.
 
-flowchart TD
+### Implemented Features
 
-A[AI Purchase Decision] --> B[Send Payment to Smart Contract]
+* Demand Prediction Model using machine learning
+* AI agent decision engine
+* Smart account creation with fixed user deposit
+* Buy-only investment policy
+* Basic backend infrastructure
+* Protocol-owned liquidity fund structure
 
-B --> C[Supplier Confirmation]
+---
 
-C --> D[Release POL Payment]
+# Version 1.1 — Model Improvements
 
-D --> E[Record Transaction on Blockchain]
+Planned improvements to the AI prediction engine.
 
-Advanced Dashboard
-Planned UI improvements:
-Real-time analytics
-Inventory visualization
-Smart account monitoring
-AI decision transparency
-Known Limitations
-Current technical limitations include:
-Basic AI decision logic
-Limited blockchain transaction simulation
-No predictive analytics yet
-UI dashboard requires improvements
-These will be addressed in future versions.
-Call for Contributors
-We are looking for contributors in the following areas:
-AI / Machine Learning
-Demand prediction models
-Procurement optimization
-Blockchain Development
-Smart contracts
-Web3 integration
-Frontend Development
-React dashboard improvements
-Data visualization
-Backend Development
-API architecture
-Database optimization
-Long-Term Vision
-The project aims to become a fully autonomous procurement platform capable of:
-Predicting supply demand
-Automatically managing inventory
-Executing secure blockchain payments
-Operating within predefined financial constraints
-Potential applications include:
-enterprise supply chain systems
-financial procurement automation
-decentralized financial logistics
+### Features
+
+* Advanced ML models (XGBoost / Gradient Boosting)
+* Real-time financial data ingestion
+* Demand signal optimization
+* Feature importance visualization
+* Improved model accuracy
+
+---
+
+# Version 1.2 — Autonomous Agent Upgrade
+
+Enhancing the intelligence of the decision agent.
+
+### Features
+
+* Reinforcement Learning investment strategies
+* Portfolio optimization
+* Risk control system
+* Dynamic trade sizing
+* AI decision explainability
+
+---
+
+# Version 1.3 — Blockchain Infrastructure
+
+Full blockchain integration for security and transparency.
+
+### Features
+
+* Smart contract-based investment vault
+* On-chain transaction verification
+* AI decision audit trail
+* Decentralized trade validation
+
+---
+
+# Version 2.0 — Fully Autonomous Investment Protocol
+
+Long-term vision of the system.
+
+### Features
+
+* Multi-asset investment support
+* Decentralized governance
+* AI portfolio management
+* Multi-agent trading system
+* Advanced risk management
+
+---
+
+# Known Technical Limitations
+
+Current limitations that will be addressed in future versions:
+
+* Demand model uses static datasets
+* Limited broker/DEX integration
+* Security layer for automated transactions still evolving
+* Smart contract infrastructure in early stage
+* No real-time financial data integration yet
+
+---
+
+# Call for Contributors
+
+We are actively looking for contributors in the following areas.
+
+### Machine Learning
+
+* Demand forecasting models
+* Reinforcement learning agents
+* Financial signal analysis
+
+### Blockchain Development
+
+* Smart contract development
+* Protocol-owned liquidity architecture
+* On-chain verification systems
+
+### Backend Engineering
+
+* API development
+* Broker integrations
+* Transaction processing pipelines
+
+### Frontend Development
+
+* Investment dashboard
+* Portfolio visualization
+* Agent monitoring interface
+
+---
+
+# Long-Term Vision
+
+The goal of this project is to create a **secure autonomous AI investment protocol** where users deploy intelligent agents that manage capital under transparent blockchain-enforced rules.
