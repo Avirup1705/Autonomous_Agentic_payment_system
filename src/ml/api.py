@@ -62,7 +62,7 @@ OWNER_INVENTORY_CSV = (
 # POL ↔ INR
 # -------------------------------------------------
 POL_TO_INR = 150_000
-USER_BALANCE_POL = 1.1
+USER_BALANCE_POL = 10.0
 USER_BALANCE_WEI = int(USER_BALANCE_POL * 1e18)
 
 # -------------------------------------------------

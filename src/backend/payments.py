@@ -91,10 +91,10 @@ def send_payment(to_address=None, amount_wei=None, live=False):
 # ------------------------------
 if __name__ == "__main__":
     bal_wei, bal_pol = check_smart_account_balance()
-    print(f"💼 Smart Account Balance: {bal_pol} POL ({bal_wei} wei)")
+    print(f"[WALLET] Smart Account Balance: {bal_pol} POL ({bal_wei} wei)")
 
     gas_wei, gas_pol = estimate_gas()
-    print(f"⛽ Estimated gas: {gas_pol} POL ({gas_wei} wei)")
+    print(f"[GAS] Estimated gas: {gas_pol} POL ({gas_wei} wei)")
 
     tx_info = send_payment(live=False)
-    print(f"💰 Test TX Info: {tx_info}")
+    print(f"[TX] Test TX Info: {tx_info}")

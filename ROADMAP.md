@@ -1,170 +1,75 @@
-# ROADMAP.md
+# Payventory Roadmap 🚀
 
-# Autonomous AI Investment Agent — Project Roadmap
-
-This project aims to build an **AI-powered autonomous investment agent** that manages a user-funded smart account and automatically purchases assets based on demand signals.
+Payventory aims to build a **fully autonomous inventory management and agentic payment protocol** where AI agents monitor stock levels and execute blockchain-enforced payments under transparent, user-defined rules.
 
 The system integrates:
-
-* AI Demand Prediction
-* Autonomous AI Agents
-* Protocol-Owned Liquidity (POL)
-* Blockchain Smart Contracts
-* Secure Automated Payments
+- **AI Demand Prediction**: Deep learning models to forecast inventory needs.
+- **Autonomous Agents**: Intelligent decision-makers that trigger restocks.
+- **Protocol-Owned Liquidity (POL)**: Smart account-based fund management.
+- **Blockchain Execution**: Secure, audited payments on the Polygon network.
+- **Real-time Synchronization**: Unified data between MongoDB, CSVs, and the Dashboard.
 
 ---
 
-# System Architecture Flow
+## 🏗️ System Architecture Flow
 
 ```mermaid
-flowchart TD
-
-A[User Creates Smart Account] --> B[User Deposits Funds]
-B --> C[Funds Stored in POL Liquidity Vault]
-
-C --> D[AI Demand Prediction Model]
-D --> E[Demand Signal Generated]
-
-E --> F[AI Agent Decision Engine]
-
-F --> G{Investment Decision}
-
-G -->|Demand High| H[Generate Buy Order]
-G -->|Demand Low| I[No Action]
-
-H --> J[Encrypt Trade Request]
-
-J --> K[Send Transaction to Smart Contract]
-
-K --> L{Smart Contract Validation}
-
-L -->|Valid| M[Release POL Liquidity]
-L -->|Invalid| N[Reject Transaction]
-
-M --> O[Execute Purchase via Broker / DEX]
-
-O --> P[Asset Added to User Portfolio]
-
-P --> Q[Transaction Stored on Blockchain]
-
-Q --> R[Notification Sent to User]
-
+graph TD
+    A[Human Settings] -->|Configure Budgets/Rules| B(Control Panel)
+    B -->|Save to MongoDB| C[Global Config]
+    D[Inventory Data .CSV] -->|Historical Sales| E(AI Demand Forecast)
+    E -->|Predicted 7d Demand| F(Restock Agent)
+    C -->|Rules/Limits| F
+    F -->|Decide Restock| G{Security Layer}
+    G -->|Budget Valid?| H[Restricted Payment Intent]
+    H -->|Web3 Execution| I[Polygon Blockchain Payment]
+    I -->|Success| J[Update MongoDB & CSV]
+    J -->|Notification| K[WhatsApp/Twilio Update]
+    J -->|Data Sync| L[Real-time Dashboard]
 ```
 
 ---
 
-# Version 1.0 — Hackathon Submission
+## 📍 Phase 1: Core Automation (Current State)
+Focused on demonstrating the **autonomous commerce cycle**.
+- [x] AI Demand Forecast (LSTM/Prophet models)
+- [x] Autonomous Restock Decision Logic
+- [x] Unified "Payventory" Database (MongoDB)
+- [x] WhatsApp/Twilio Notifications
+- [x] Live Monitoring Dashboard
+- [x] Smart Account Payment Simulation
 
-The first version focuses on demonstrating the **core autonomous investment system**.
+## 📍 Phase 2: Intelligence & Optimization (v1.1)
+Planned improvements to the AI brain.
+- [ ] Real-time demand ingestion (Webhooks)
+- [ ] Multi-supplier competitive bidding
+- [ ] Anomaly detection for fraud/theft
+- [ ] Dynamic budget re-allocation based on ROI
+- [ ] Advanced warehouse heatmaps
 
-### Implemented Features
+## 📍 Phase 3: Web3 & Trust (v1.2)
+Full blockchain hardening.
+- [ ] On-chain audit trail for every agent decision
+- [ ] DAO-based budget governance
+- [ ] Smart Contract Vault for supplier escrows
+- [ ] Reputation-based supplier scoring (on-chain)
 
-* Demand Prediction Model using machine learning
-* AI agent decision engine
-* Smart account creation with fixed user deposit
-* Buy-only investment policy
-* Basic backend infrastructure
-* Protocol-owned liquidity fund structure
-
----
-
-# Version 1.1 — Model Improvements
-
-Planned improvements to the AI prediction engine.
-
-### Features
-
-* Advanced ML models (XGBoost / Gradient Boosting)
-* Real-time financial data ingestion
-* Demand signal optimization
-* Feature importance visualization
-* Improved model accuracy
-
----
-
-# Version 1.2 — Autonomous Agent Upgrade
-
-Enhancing the intelligence of the decision agent.
-
-### Features
-
-* Reinforcement Learning investment strategies
-* Portfolio optimization
-* Risk control system
-* Dynamic trade sizing
-* AI decision explainability
+## 📍 Phase 4: Scaling & Integration (v2.0)
+The global vision.
+- [ ] Multi-warehouse support
+- [ ] Integration with major ERPs (SAP, Netsuite)
+- [ ] Cross-chain payment settlement (LayerZero)
+- [ ] Predictive maintenance for logistics fleets
 
 ---
 
-# Version 1.3 — Blockchain Infrastructure
+## 🛠️ Known Technical Limitations
+- **Latency**: Python ML processing time can affect real-time sync.
+- **Transaction Costs**: Gas fees on Polygon (addressed via Bundlers).
+- **Cold Starts**: Render/Vercel free tier spin-up times.
 
-Full blockchain integration for security and transparency.
-
-### Features
-
-* Smart contract-based investment vault
-* On-chain transaction verification
-* AI decision audit trail
-* Decentralized trade validation
-
----
-
-# Version 2.0 — Fully Autonomous Investment Protocol
-
-Long-term vision of the system.
-
-### Features
-
-* Multi-asset investment support
-* Decentralized governance
-* AI portfolio management
-* Multi-agent trading system
-* Advanced risk management
-
----
-
-# Known Technical Limitations
-
-Current limitations that will be addressed in future versions:
-
-* Demand model uses static datasets
-* Limited broker/DEX integration
-* Security layer for automated transactions still evolving
-* Smart contract infrastructure in early stage
-* No real-time financial data integration yet
-
----
-
-# Call for Contributors
-
-We are actively looking for contributors in the following areas.
-
-### Machine Learning
-
-* Demand forecasting models
-* Reinforcement learning agents
-* Financial signal analysis
-
-### Blockchain Development
-
-* Smart contract development
-* Protocol-owned liquidity architecture
-* On-chain verification systems
-
-### Backend Engineering
-
-* API development
-* Broker integrations
-* Transaction processing pipelines
-
-### Frontend Development
-
-* Investment dashboard
-* Portfolio visualization
-* Agent monitoring interface
-
----
-
-# Long-Term Vision
-
-The goal of this project is to create a **secure autonomous AI investment protocol** where users deploy intelligent agents that manage capital under transparent blockchain-enforced rules.
+## 🤝 Call for Contributors
+We are looking for experts in:
+- **ML/DS**: Forecasting accuracy and RL agents.
+- **Web3**: Account Abstraction and Smart Contract security.
+- **DevOps**: Scalable infrastructure for AI workloads.
