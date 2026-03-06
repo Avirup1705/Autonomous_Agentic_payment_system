@@ -168,9 +168,9 @@ async function runAutonomousOrder() {
   }
 }
 
-/* -------------------- AUTOPAY (WHATSAPP BASED) -------------------- */
+/* -------------------- PAYVENTORY (WHATSAPP BASED) -------------------- */
 
-async function autoPay(whatsapp, amount) {
+async function payventory(whatsapp, amount) {
   const user = await User.findOne({ whatsapp });
   if (!user) throw new Error("USER NOT FOUND");
 
@@ -190,11 +190,11 @@ async function autoPay(whatsapp, amount) {
   return userOpHash;
 }
 
-app.post("/api/autopay", async (req, res) => {
+app.post("/api/payventory", async (req, res) => {
   try {
     const { whatsapp, amount, product } = req.body;
 
-    const txHash = await autoPay(whatsapp, amount);
+    const txHash = await payventory(whatsapp, amount);
 
     res.json({
       success: true,

@@ -6,8 +6,8 @@ import uuid
 from pathlib import Path
 from collections import defaultdict
 
-from predict import predict_7_day_demand
-from default_config import DEFAULT_CONFIG
+from src.ml.predict import predict_7_day_demand
+from src.ml.default_config import DEFAULT_CONFIG
 
 from src.backend.db import supplier_inventory_collection
 
