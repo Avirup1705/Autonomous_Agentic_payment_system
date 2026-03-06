@@ -107,7 +107,7 @@ def main(
     output = reduce_for_demo(output, demo_config)
 
     print("\n==============================")
-    print("   StockEasy Restock Agent")
+    print("   Payventory Restock Agent")
     print("==============================\n")
 
     print(f"Cycle ID: {output['cycle_id']}")

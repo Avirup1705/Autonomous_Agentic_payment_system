@@ -22,7 +22,7 @@ if not MONGO_URI:
 
 # Mongo client
 client = MongoClient(MONGO_URI)
-db = client["stockeasy"]
+db = client["payventory"]
 
 
 # User / agent configuration

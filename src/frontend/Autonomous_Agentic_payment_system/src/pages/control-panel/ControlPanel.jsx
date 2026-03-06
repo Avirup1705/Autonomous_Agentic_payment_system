@@ -30,7 +30,7 @@ import {
 } from "lucide-react";
 import "./controlPanel.css";
 
-const rawUrl = import.meta.env.VITE_BACKEND_URL || "https://stockeasy-backend-qi9b.onrender.com";
+const rawUrl = import.meta.env.VITE_BACKEND_URL || "https://payventory-backend.onrender.com";
 const API_BASE_URL = rawUrl.replace(/\/$/, "");
 
 // Default configuration
@@ -206,7 +206,7 @@ function ControlPanel() {
             {/* Navigation Bar */}
             <nav className="cp-nav">
                 <div className="cp-nav-brand">
-                    <Link to="/" className="cp-brand-name">StockEasy</Link>
+                    <Link to="/" className="cp-brand-name">Payventory</Link>
                 </div>
 
                 {/* Desktop Navigation Links */}

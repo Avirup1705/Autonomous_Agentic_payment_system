@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import GooeyNav from "./GooeyNav";
 
 const navItems = [
-  { label: "Home", path: "/homepage" },
+  { label: "Home", path: "/" },
   { label: "Dashboard", path: "/dashboard" }
 ];
 

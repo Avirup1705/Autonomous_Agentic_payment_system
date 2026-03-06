@@ -68,7 +68,7 @@ USER_BALANCE_WEI = int(USER_BALANCE_POL * 1e18)
 # -------------------------------------------------
 # FASTAPI
 # -------------------------------------------------
-app = FastAPI(title="StockEasy – Agentic Commerce Engine")
+app = FastAPI(title="Payventory – Agentic Commerce Engine")
 
 app.add_middleware(
     CORSMiddleware,
@@ -312,7 +312,7 @@ async def run_restock(execute_payments: bool = False):
         "critical": int((owner_df["current_stock"] <= 5).sum()),
     }
 
-    msg_body = f"✅ StockEasy Restock Complete\nCycle: {result['cycle_id']}"
+    msg_body = f"✅ Payventory Restock Complete\nCycle: {result['cycle_id']}"
     if restocked_details:
         full_items_str = "\n".join(restocked_details)
         # Twilio has a 1600 char limit. Let's be safe and truncate if needed.

@@ -11,7 +11,7 @@ import {
 import "./Dashboard.css";
 
 // API Config
-const rawUrl = import.meta.env.VITE_BACKEND_URL || "https://stockeasy-backend-qi9b.onrender.com";
+const rawUrl = import.meta.env.VITE_BACKEND_URL || "https://payventory-backend.onrender.com";
 const API_BASE_URL = rawUrl.replace(/\/$/, ""); // Strip trailing slash
 
 // Theme Colors
@@ -112,7 +112,7 @@ function Dashboard() {
   const [dashboardStats, setDashboardStats] = useState(null); // Actual budget usage
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [loadingMessage, setLoadingMessage] = useState("Initializing StockEasy Engine...");
+  const [loadingMessage, setLoadingMessage] = useState("Initializing Payventory Engine...");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showAllDecisions, setShowAllDecisions] = useState(false);
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
@@ -331,7 +331,7 @@ function Dashboard() {
       {/* Top Navigation Bar */}
       <nav className="dashboard-nav">
         <div className="dashboard-nav-brand">
-          <Link to="/" className="dashboard-brand-name">StockEasy</Link>
+          <Link to="/" className="dashboard-brand-name">Payventory</Link>
         </div>
 
         {/* Desktop Navigation Links */}

@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from restock_agent import run_agent
 from default_config import DEFAULT_CONFIG
 
-app = FastAPI(title="StockEasy Dashboard Stats")
+app = FastAPI(title="Payventory Dashboard Stats")
 
 # CORS for React
 app.add_middleware(

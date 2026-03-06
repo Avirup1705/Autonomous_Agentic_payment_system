@@ -235,9 +235,9 @@ def run_agent(config: Optional[dict] = None) -> dict:
     }
 
 if __name__ == "__main__":
-    print("\n🧠 Running StockEasy Agent (LOCAL TEST)\n")
+    print("\n🧠 Running Payventory Agent (LOCAL TEST)\n")
     result = run_agent()
 if __name__ == "__main__":
-    print("\n🧠 Running StockEasy Agent (LOCAL TEST)\n")
+    print("\n🧠 Running Payventory Agent (LOCAL TEST)\n")
     result = run_agent()
     print(f"Decisions generated: {len(result['decisions'])}")
