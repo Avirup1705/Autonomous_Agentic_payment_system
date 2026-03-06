@@ -1,4 +1,4 @@
-product,category,sale_price,current_stock,avg_daily_sales,supplier_cost,supplier_id,daily_sales
+product_name,category,sale_price,current_stock,avg_daily_sales,supplier_cost,supplier_id,daily_sales
 Garlic Oil - Vegetarian Capsule 500 mg,Beauty & Hygiene,220.0,0,5,176.0,SUP3,0
 Water Bottle - Orange,"Kitchen, Garden & Pets",180.0,109,7,144.0,SUP3,0
 "Brass Angle Deep - Plain, No.2",Cleaning & Household,119.0,31,2,95.2,SUP2,3
