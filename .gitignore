@@ -1,0 +1,61 @@
+# OS Files
+.DS_Store
+Thumbs.db
+
+
+# Environment Variables
+.env
+.env.local
+.env.development
+.env.production
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.sqlite3
+*.db
+
+# Python virtual environments
+venv/
+env/
+.venv/
+
+# Node / Frontend
+node_modules/
+dist/
+build/
+coverage/
+
+# npm logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+
+# Vite
+.vite
+dist/
+
+
+# Dataset / ML files
+src/ml/data/raw_dataset/*
+src/ml/data/processed_dataset/*
+
+
+!src/ml/data/raw_dataset/.keep
+!src/ml/data/processed_dataset/.keep
+
+
+# IDE files
+.vscode/
+.idea/
+
+
+*.tsbuildinfo
+
+
+logs/
+*.log
