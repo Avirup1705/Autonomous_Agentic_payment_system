@@ -88,6 +88,49 @@ npm run dev
 
 ---
 
+## 💻 Usage
+
+Payventory is designed to be fully autonomous, but you can interact with the engine and backend APIs to monitor behavior or manually trigger decisions.
+
+### 🌟 UI Walkthrough
+
+1. **Dashboard**: Navigate to `http://localhost:3000/dashboard` to view real-time inventory health and active agents.
+2. **Control Panel**: Navigate to `http://localhost:3000/control-panel` to visualize ML predictions and recent AI-driven restock decisions. 
+   - **Expected Output**: You will see a graph mapping the next 7 days of predicted demand and a table listing authorized supplier transactions.
+
+### 💻 Code Example: Fetching Inventory Data
+
+You can also interact programmatically with the Node.js backend.
+
+**Request:**
+```python
+import requests
+
+# Fetch the current inventory status
+response = requests.get("http://localhost:3000/api/inventory")
+print(response.json())
+```
+
+**Expected Output:**
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": "item123",
+      "name": "Wireless Headphones",
+      "current_stock": 42,
+      "reorder_level": 50,
+      "status": "Low Stock"
+    }
+  ]
+}
+```
+
+- **See more in the [examples/README.md](./examples/README.md)** for AI agent configuration payloads and advanced connection scripts.
+
+---
+
 ## 🤝 How to Contribute
 We welcome contributions to Payventory! Here’s how you can help:
 
