@@ -55,6 +55,22 @@ Database
 PostgreSQL / MongoDB
 
 ---
+## 🧠 System Architecture & Workflow
+
+```mermaid
+graph TD
+    A[Human Settings] -->|Configure Budgets/Rules| B(Control Panel)
+    B -->|Save to MongoDB| C[Global Config]
+    D[Inventory Data .CSV] -->|Historical Sales| E(AI Demand Forecast)
+    E -->|Predicted 7d Demand| F(Restock Agent)
+    C -->|Rules/Limits| F
+    F -->|Decide Restock| G{Security Layer}
+    G -->|Budget Valid?| H[Restricted Payment Intent]
+    H -->|Web3 Execution| I[Polygon Blockchain Payment]
+    I -->|Success| J[Update MongoDB & CSV]
+    J -->|Notification| K[WhatsApp Update]
+    J -->|Data Sync| L[Real-time Dashboard]
+```
 
 # How It Works
 
